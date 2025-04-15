@@ -186,6 +186,9 @@ class LimbRiggerWidget(MayaWindow): # Creates a class called LimbRiggerWidget wi
         colorPicker.colorChanged.connect(self.ColorPickerChanged)
         self.masterLayout.addWidget(colorPicker)
 
+        setColorBtn = QPushButton("Set Color")
+        setColorBtn.clicked.connect(self.SetColorBtnClicked)
+        self.masterLayout.addWidget(setColorBtn)
 
         rigLimbBtn = QPushButton("Rig Limb") # Creates a button with the words Rig Limb on it
         rigLimbBtn.clicked.connect(lambda : self.rigger.RigLimb()) # When pushed the button calls to rigger which then gets the RigLimb function from within the class LimbRigger
@@ -195,6 +198,12 @@ class LimbRiggerWidget(MayaWindow): # Creates a class called LimbRiggerWidget wi
         self.rigger.controllerColor[0] = newColor.redF()
         self.rigger.controllerColor[1] = newColor.greenF()
         self.rigger.controllerColor[2] = newColor.blueF()
+
+    def SetColorBtnClicked(self):
+        curbSelection = mc.ls(sl = True)[0]
+        mc.setAttr(curbSelection + ".overrideEnabled", 1)
+        mc.setAttr(curbSelection + ".overrideRBGColors", 1)
+        mc.setAttr(curbSelection + ".overrideColorRBG", self.rigger.controllerColor[0], self.rigger.controllerColor[1], self.rigger.controllerColor[2], type = "double3")
 
     #def ChangeColor(self, color):
         #colorValue = int(color*255)
