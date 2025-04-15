@@ -1,30 +1,15 @@
+import importlib
+import MayaUtils
+importlib.reload(MayaUtils)
+
+from MayaUtils import GetMayaMainWindow, MayaWindow
 from PySide2.QtGui import QColor
-from PySide2.QtWidgets import QColorDialog, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QMessageBox, QPushButton, QSlider, QVBoxLayout, QWidget #Imports different things so we can use them in this file
+from PySide2.QtWidgets import QColorDialog, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QSlider, QVBoxLayout, QWidget #Imports different things so we can use them in this file
 from PySide2.QtCore import Qt, Signal # Imports Qt so that we can use it in this file
 from maya.OpenMaya import MVector
-import maya.OpenMayaUI as omui # imports maya UI as a smaller nickname to be used in the file
 import maya.mel as mel
-import shiboken2 # imports shibroken2
-
-def GetMayaMainWindow()-> QMainWindow: # Defines a function called GetMayaMainWindow that uses QMainWindow
-    mainWindow = omui.MQtUtil.mainWindow() # Makes the Maya UI main window equal the variable mainWindow so it's easier to use later
-    return shiboken2.wrapInstance(int(mainWindow), QMainWindow) # returns the main window UI
-
-def DeleteWidgetWithName(name): # Defines a function called DeleteWidgetWithName with the parameter name
-    for widget in GetMayaMainWindow().findChildren(QWidget, name): # Creates a for loop that checks for widget in GetMayaMainWindow and finds children
-        widget.deleteLater() # Deletes widget at a later time
-
-class MayaWindow(QWidget): # Creates a class called MayaWindow that uses the parameters of QWidget
-    def __init__(self): # Creates a constructor
-        super().__init__(parent = GetMayaMainWindow()) # Calls to the parent class for inheritance and makes parent equal to GetMayaMainWindow
-        DeleteWidgetWithName(self.GetWidgetUniqueName()) # Deletes widget with unique name
-        self.setWindowFlags(Qt.WindowType.Window) # Creates a window flag for the Maya window that we made
-        self.setObjectName(self.GetWidgetUniqueName()) # Names widget with unique name
-
-    def GetWidgetUniqueName(self): # Defines a function called GetWidgetUniqueName with parameter self
-        return "seujfedfehufhufhuhywe3djfcedhsuiafhdse" # returns a string to be the unique name
-
 import maya.cmds as mc # Imports maya.cmds as a shorter nickname mc to use easier later on
+
 class LimbRigger: # Creates a class called LimbRigger
     def __init__(self): # Creates a constructor
         self.root = "" # Initializes root as a string variable
