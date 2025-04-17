@@ -41,7 +41,7 @@ class ProxyGenerator:
         for jnt, verts in jntVertDict.items():
             newChunk = self.CreateProxyModelFortJntAndVerts(jnt, verts)
 
-    def CreateProxyModelFortJntAndVerts(self, jnt, verts):
+    def CreateProxyModelForJntAndVerts(self, jnt, verts):
         if not verts:
             return None
         
