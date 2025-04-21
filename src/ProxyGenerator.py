@@ -31,7 +31,7 @@ class ProxyGenerator:
             print(f"{self.model} is not bound with any joint!")
             return
         
-        self.skin = skin
+        self.skin = skin[0]
         self.jnts = jnts
         print(f"found model {self.model} with skin {self.skin} and joints: {self.jnts}")
 
@@ -68,7 +68,7 @@ class ProxyGenerator:
         mc.circle(n = globalProxyCtrl, r = 20)
 
         mc.parent(proxyTopGrp, globalProxyCtrl)
-        mc.parent(ctrlGrpName, globalProxyCtrl)
+        mc.parent(ctrlTopGrp, globalProxyCtrl)
 
         mc.setAttr(proxyTopGrp + ".inheritsTransform", 0)
 
