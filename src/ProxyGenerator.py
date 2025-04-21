@@ -58,7 +58,7 @@ class ProxyGenerator:
             mc.connectAttr(ctrlName + "." + visibilityAttr, newChunk + ".v")
             ctrls.append(ctrlName)
 
-        proxyTopGrp =[ self.model + "_proxy_grp"]
+        proxyTopGrp = self.model + "_proxy_grp"
         mc.group(chunks, n = proxyTopGrp)
 
         ctrlTopGrp = "ac_" + self.model + "_proxy_grp"
