@@ -66,7 +66,7 @@ class MayaToUE:
         
         self.rootJnt = selection[0]
 
-class AnimClipWidget(MayaWindow):
+class AnimClipWidget(QWidget):
     def __init__(self, animClip: AnimClip):
         super().__init__()
         self.animClip = animClip
@@ -100,6 +100,21 @@ class AnimClipWidget(MayaWindow):
         maxFrameLineEdit.setText(str(int(self.animClip.frameMax)))
         maxFrameLineEdit.textChanged.connect(self.MaxFrameChanged)
         self.masterLayout.addWidget(maxFrameLineEdit)
+
+        setRangeBtn = QPushButton("[-]")
+        setRangeBtn.clicked.connect(self.SetRangeBtnClicked)
+        self.masterLayout.addWidget(setRangeBtn)
+
+        deleteBtn = QPushButton("X")
+        deleteBtn.clicked.connect(self.DeleteBtnClicked)
+        self.masterLayout.addWidget(deleteBtn)
+
+    def DeleteBtnClicked(self):
+        self.deleteLater()
+
+    def SetRangeBtnClicked(self):
+        mc.playbackOptions(e=True, min = self.animClip.frameMin, max = self.animClip.frameMax)
+        mc.playbackOptions(e=True, ast = self.animClip.frameMin, aet = self.animClip.frameMax)
 
     def MaxFrameChanged(self, newVal):
         self.animClip.frameMax = int(newVal)
@@ -161,5 +176,4 @@ class MayaToUEWidget(MayaWindow):
         self.mayaToUE.SetSelectedJointAsRoot()
         self.rootJntText.setText(self.mayaToUE.rootJnt)
 
-# MayaToUEWidget().show()
-AnimClipWidget(AnimClip()).show()
+MayaToUEWidget().show()
