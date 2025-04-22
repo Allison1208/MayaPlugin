@@ -87,6 +87,9 @@ class AnimClipWidget(MayaWindow):
         subfixLineEdit.textChanged.connect(self.SubfixTextChanged)
         self.masterLayout.addWidget(subfixLineEdit)
 
+    def SubfixTextChanged(self, newText):
+        self.animClip.subfix = newText
+
     def ShouldExportCheckBoxToggled(self):
         self.animClip.shouldExport = not self.animClip.shouldExport
 
