@@ -1,5 +1,6 @@
 from MayaUtils import *
-from PySide2.QtWidgets import QLineEdit, QListWidget, QMessageBox, QPushButton, QVBoxLayout
+from PySide2.QtGui import QRegExpValidator
+from PySide2.QtWidgets import QCheckBox, QHBoxLayout, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QVBoxLayout
 
 def TryAction(actionFunc):
     def wrapper(*args, **kwargs):
@@ -24,6 +25,7 @@ class MayaToUE:
         self.animaions : list[AnimClip] = []
         self.fileName = ""
         self.saveDir = ""
+
     def AddSelectedMeshes(self):
         selection = mc.ls(sl = True)
 
@@ -64,6 +66,29 @@ class MayaToUE:
         
         self.rootJnt = selection[0]
 
+class AnimClipWidget(MayaWindow):
+    def __init__(self, animClip: AnimClip):
+        super().__init__()
+        self.animClip = animClip
+        self.masterLayout = QHBoxLayout()
+        self.setLayout(self.masterLayout)
+
+        shouldExportCheckBox = QCheckBox()
+        shouldExportCheckBox.setChecked(self.animClip.shouldExport)
+        self.masterLayout.addWidget(shouldExportCheckBox)
+        shouldExportCheckBox.toggled.connect(self.ShouldExportCheckBoxToggled)
+
+        subfixLabel = QLabel("Subfix: ")
+        self.masterLayout.addWidget(subfixLabel)
+
+        subfixLineEdit = QLineEdit()
+        subfixLineEdit.setValidator(QRegExpValidator("[a-zA-Z0-0_]+"))
+        subfixLineEdit.setText(self.animClip.subfix)
+        subfixLineEdit.textChanged.connect(self.SubfixTextChanged)
+        self.masterLayout.addWidget(subfixLineEdit)
+
+    def ShouldExportCheckBoxToggled(self):
+        self.animClip.shouldExport = not self.animClip.shouldExport
 
 class MayaToUEWidget(MayaWindow):
     def GetWidgetUniqueName(self):
@@ -98,7 +123,7 @@ class MayaToUEWidget(MayaWindow):
         self.masterLayout.addWidget(addMeshesBtn)
 
     @TryAction
-    def AddMeshBtnClicked(self):
+    def AddMeshesBtnClicked(self):
         self.mayaToUE.AddSelectedMeshes()
         self.meshList.clear()
         self.meshList.addItems(self.mayaToUE.models)
@@ -113,4 +138,5 @@ class MayaToUEWidget(MayaWindow):
         self.mayaToUE.SetSelectedJointAsRoot()
         self.rootJntText.setText(self.mayaToUE.rootJnt)
 
-MayaToUEWidget().show()
+# MayaToUEWidget().show()
+AnimClipWidget(AnimClip()).show()
