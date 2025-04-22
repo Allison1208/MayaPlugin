@@ -87,6 +87,26 @@ class AnimClipWidget(MayaWindow):
         subfixLineEdit.textChanged.connect(self.SubfixTextChanged)
         self.masterLayout.addWidget(subfixLineEdit)
 
+        minFrameLabel = QLabel("Min: ")
+        self.masterLayout.addWidget(minFrameLabel)
+        minFrameLineEdit = QLineEdit()
+        minFrameLineEdit.setText(str(int(self.animClip.frameMin)))
+        minFrameLineEdit.textChanged.connect(self.MinFrameChanged)
+        self.masterLayout.addWidget(minFrameLineEdit)
+
+        maxFrameLabel = QLabel("Max: ")
+        self.masterLayout.addWidget(maxFrameLabel)
+        maxFrameLineEdit = QLineEdit()
+        maxFrameLineEdit.setText(str(int(self.animClip.frameMax)))
+        maxFrameLineEdit.textChanged.connect(self.MaxFrameChanged)
+        self.masterLayout.addWidget(maxFrameLineEdit)
+
+    def MaxFrameChanged(self, newVal):
+        self.animClip.frameMax = int(newVal)
+
+    def MinFrameChanged(self, newVal):
+        self.animClip.frameMin = int(newVal)
+
     def SubfixTextChanged(self, newText):
         self.animClip.subfix = newText
 
