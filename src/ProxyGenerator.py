@@ -107,7 +107,7 @@ class ProxyGenerator:
         for jnt in self.jnts:
             dict[jnt] = []
 
-        verts = mc.ls(f"{self.model}.vtx[*]")
+        verts = mc.ls(f"{self.model}.vtx[*]", fl = True)
         for vert in verts:
             owningJnt = self.GetJntWithMaxInfluence(vert, self.skin)
             dict[owningJnt].append(vert)
