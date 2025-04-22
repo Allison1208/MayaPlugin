@@ -26,6 +26,10 @@ class MayaToUE:
         self.fileName = ""
         self.saveDir = ""
 
+    def AddNewAnimClip(self):
+        self.animaions.append(AnimClip())
+        return self.animaions[-1]
+
     def AddSelectedMeshes(self):
         selection = mc.ls(sl = True)
 
@@ -159,6 +163,20 @@ class MayaToUEWidget(MayaWindow):
         addMeshesBtn = QPushButton("Add Meshes")
         addMeshesBtn.clicked.connect(self.AddMeshesBtnClicked)
         self.masterLayout.addWidget(addMeshesBtn)
+
+        addAnimEntryBtn = QPushButton("Add Animation Clip")
+        addAnimEntryBtn.clicked.connect(self.AddAnimEntryBtnClicked)
+        self.masterLayout.addWidget(addAnimEntryBtn)
+        
+        self.animClipEntryLayout = QVBoxLayout()
+        self.masterLayout.addLayout(self.animClipEntryLayout)
+
+    @TryAction
+    def AddAnimEntryBtnClicked(self):
+        newAnimClip = self.mayaToUE.AddNewAnimClip()
+        newAnimClipWidget = AnimClipWidget(newAnimClip)
+        self.animClipEntryLayout.addWidget(newAnimClipWidget)
+
 
     @TryAction
     def AddMeshesBtnClicked(self):
