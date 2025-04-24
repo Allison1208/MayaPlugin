@@ -29,7 +29,7 @@ class MayaToUE:
         self.saveDir = ""
 
     def SendToUnreal(self):
-        print("Sending tp Unreal!")
+        print("Sending to Unreal!")
     
     def GetSkeletalMeshSavePath(self):
         savePath = os.path.join(self.saveDir, self.fileName + ".fbx")
