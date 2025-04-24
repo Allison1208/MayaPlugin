@@ -47,7 +47,25 @@ class MayaToUE:
 
         # -f means the file name, -s means export selected, -ea means export animation
         mc.FBXExport('-f', skeletalMeshExportPath, '-s', True, '-ea', False)
-        
+
+        for animClip in self.animaions:
+            if self.animaions:
+                mc.FBXExportBakeComplexAnimation('-v', True)
+                os.makedirs(os.path.join(self.saveDir, "animations"), exist_ok = True)
+
+                animExportPath = self.GetSavePathForAnimClip(animClip)
+                
+                startFrame = animClip.frameMin
+                endFrame = animClip.frameMax
+
+                mc.FBXExportBakeComplexStart('-v', startFrame)
+                mc.FBXExportBakeComplexEnd('-v', endFrame)
+                mc.FBXExportBakeComplexStep('-v', 1)
+
+                mc.playbackOptions(e = True, min = startFrame, max = endFrame)
+
+                mc.FBXExport('-f', animExportPath, "-s", True, '-ea', True )
+
         print("Sending to Unreal!")
     
     def GetSkeletalMeshSavePath(self):
