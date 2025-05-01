@@ -69,7 +69,7 @@ class MayaToUE:
 
                 mc.FBXExport('-f', animExportPath, "-s", True, '-ea', True )
 
-        ueUtilPath = os.path.join(MayaPlugins.srcDir, "UnrealUtitlies.py")
+        ueUtilPath = os.path.join(MayaPlugins.srcDir, "UnrealUtils.py")
         ueUtilPath = os.path.normpath(ueUtilPath)
 
         meshPath = self.GetSkeletalMeshSavePath().replace("\\", "/")
@@ -79,10 +79,16 @@ class MayaToUE:
         with open(ueUtilPath, "r") as ueUtilityFile:
             commandLines = ueUtilityFile.readlines()
 
-        commandLines.append(f"\nImportMeshAndAnimations(\"{meshPath}\', \'{aimDir}\')")
+        commandLines.append(f"\nImportMeshAndAnimations(\'{meshPath}\', \'{aimDir}\')")
 
         command = "".join(commandLines)
         print(command)
+
+        remoteExec = remote_execution.RemoteExecution()
+        remoteExec.start()
+        remoteExec.open_command_connection(remoteExec.remote_nodes)
+        remoteExec.run_command(command)
+        remoteExec.stop()
 
         print("Sending to Unreal!")
     
